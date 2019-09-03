@@ -1,12 +1,52 @@
 @import './common.sass'
 
 .algorithmbar
-  text-align: center
+  box-sizing: border-box
+  display: flex
+  align-items: center
+  justify-content: center
+  
   font-size: 1.1em
   color: $black
   width: 100vw
   background-color: $grey
-  padding: 10px
+  padding: 0 10px
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 
 
-  
+.algorithmbar__algorithms
+  display: flex
+  align-items: center
+  justify-content: space-between
+  margin: 0 20px
+
+
+.algorithmbar__algorithm
+  background-color: inherit
+  outline: none
+  border: none
+  margin: 10px
+  color: lighten($black, 25%)
+  &:hover
+    cursor: pointer
+    color: $black
+  &:active
+    color: lighten($black, 15%)
+    transform: translateY(1px)
+
+.algorithmbar__algorithm--active
+  color: $black
+
+.algorithmbar__size
+  display: flex
+  margin: 0 20px
+
+.algorithmbar__input
+  margin: 0 20px
+
+.algorithmbar__speed
+  display: flex
+  margin: 0 20px
+
+
+
