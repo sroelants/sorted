@@ -1,12 +1,15 @@
-$red: #f55959
-$white: #fffafa
-$black: #544545
-$brand-font: 'Montserrat', sans-serif
-$text-font: 'Lato', sans-serif
-
+@import './common.sass'
 
 body
+  min-height: 100vh
   background-color: $white
+  display: flex
+  flex-direction: column
+
+#root
+  display: flex
+  flex-grow: 1
+  
 
 // HEADER [HEAD]
 
@@ -23,7 +26,6 @@ body
 
 .header__brand
   display: flex
-  // align-items: flex-end
   font-size: 2.5em
   padding-left: 20px
 
@@ -45,7 +47,7 @@ body
   min-height: 40%
 
 .header__brand__logo__bar2
-  min-height: 75%
+  min-height: 70%
 
 .header__brand__logo__bar3
   min-height: 100%
@@ -66,6 +68,7 @@ body
 // FOOTER [FOOT]
 
 .footer
+  color: $black
   width: 100%
   box-sizing: border-box
   position: absolute
