@@ -1,0 +1,29 @@
+@import './common.sass'
+
+.caption
+  font-size: 1.4em
+  color: $black
+  padding: 20px 5px
+  display: flex
+  justify-content: space-between
+  align-items: center
+  position: relative
+
+.caption__elements
+  margin-right: 50px
+
+.caption__sortbutton
+  padding: 10px 20px
+  background: $red
+  border: none
+  outline: none
+  font-family: $brand-font
+  font-size: 1.5em
+  color: $white
+  border-radius: 4px
+  cursor: pointer
+  &:hover
+    background: lighten($red, 5%)
+  &:active
+    background: darken($red, 5%)
+    transform: translateY(1px)
