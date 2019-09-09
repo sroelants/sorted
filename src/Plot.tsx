@@ -1,11 +1,19 @@
 import React from 'react';
-import Figure from './Figure'
+import {Figure, FigureProps} from './Figure';
+import {Bar, BarProps} from './Bar';
 import './Plot.sass'
+
+
+const heights: Array<number> = Array(50).fill(0).map((x) => Math.floor(100*Math.random()));
+const bars = heights.map((h, i) => {
+  return <Bar key={i} height={i} width={1/heights.length} />
+});
 
 const Plot: React.FunctionComponent = () => {
   return (
     <div className="plot">
-      <Figure />
+      {/* <Figure heights={heights} /> */}
+      <Figure bars={bars} />
       <Caption />
     </div>
   )

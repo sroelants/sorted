@@ -44,5 +44,8 @@
     "normalize.css": "^8.0.1",
     "prettier-eslint": "^9.0.0",
     "prettier-tslint": "^0.4.2"
+  },
+  "resolutions": {
+    "@types/react": "16.7.18"
   }
 }
