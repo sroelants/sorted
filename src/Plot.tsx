@@ -1,22 +1,53 @@
 import React from 'react';
-import {Figure, FigureProps} from './Figure';
-import {Bar, BarProps} from './Bar';
+import {Figure} from './Figure';
+import {Bar} from './Bar';
 import './Plot.sass'
+import {bubbleSort, isSorted, swap} from './sort';
 
+export interface plotProps {
+  numOfBars: number
+}
 
-const heights: Array<number> = Array(50).fill(0).map((x) => Math.floor(100*Math.random()));
-const bars = heights.map((h, i) => {
-  return <Bar key={i} height={i} width={1/heights.length} />
-});
+export interface plotState {
+  numOfBars: number,
+  active: number,
+  testing: number,
+  bars: JSX.Element[]
+}
 
-const Plot: React.FunctionComponent = () => {
-  return (
+class Plot extends React.Component<plotProps, plotState> {
+  constructor(props: plotProps) {
+    super(props)
+    this.state = {
+      numOfBars: props.numOfBars,
+      bars: [],
+      active: 0,
+      testing: 0,
+    } 
+  }
+
+  componentDidMount() {
+    const heights = Array(this.props.numOfBars)
+          .fill(0)
+          .map((x) => Math.floor(100*Math.random()));
+    const bars: JSX.Element[] = heights.map((h, i) => {
+      return <Bar 
+        key={i} 
+        active={i == this.state.active} 
+        testing={i == this.state.testing} 
+        height={h} 
+        width={1/heights.length} />
+    });
+
+  }
+  render() { 
+    return (
     <div className="plot">
-      {/* <Figure heights={heights} /> */}
-      <Figure bars={bars} />
+      <Figure bars={this.state.bars} />
       <Caption />
     </div>
   )
+  }
 }
 
 const Caption: React.FunctionComponent = () => {

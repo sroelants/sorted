@@ -1,19 +1,17 @@
 import React from 'react';
 import './Figure.sass';
-import {Bar} from './Bar';
 
 
-const Figure: React.FunctionComponent<FigureProps> = (props) => {
-      {/* {props.heights.map((h, i) => <Bar key={i} height={h} width={1/props.heights.length} />)} */}
+const Figure: React.FunctionComponent<FigureProps> = ({bars}) => {
   return (
-    <div className="figure">
-      {props.bars}
-    </div>
+    <div className="figure">{ bars }</div>
   )
 }
 
+
+// Using React.FC[] here doesn't work!
+
 export interface FigureProps {
-  bars: React.FC[]
-  {/* heights: number[] */}
+  bars: JSX.Element[]
 }
 export { Figure }

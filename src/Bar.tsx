@@ -1,5 +1,5 @@
 import React from 'react';
-import './Bar.sass'
+import './Bar.sass';
 
 const Bar: React.FC<BarProps> = ({ height, width }) => {
   return <div style={{minHeight: 4*height + "px", width: 100*width + "%",
@@ -9,6 +9,8 @@ const Bar: React.FC<BarProps> = ({ height, width }) => {
 export interface BarProps {
   height: number
   width: number
-};
+  active: boolean
+  testing: boolean
+}
 
-export {Bar};
+export { Bar };
