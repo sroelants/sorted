@@ -1,8 +1,9 @@
 import React from 'react';
 import {Figure} from './Figure';
 import {Bar} from './Bar';
+import {Caption, captionProps} from './Caption';
 import './Plot.sass'
-import {bubbleSort, isSorted, swap} from './sort';
+import {Action, bubbleSort, swap} from './sort';
 
 export interface plotProps {
   numOfBars: number
