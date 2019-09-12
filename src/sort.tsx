@@ -8,6 +8,8 @@ export type Action = Active | Testing | Swap;
 // Sorting algorithms
 
 function bubbleSort(arr: number[]): Action[] {
+  // Takes an array and returns the steps needed to sort it according to 
+  // bubblesort.
   let N = arr.length;
   let actions: Action[] = [];
   
@@ -35,7 +37,7 @@ function isSorted(arr: number[]): boolean {
   return sorted;
 }
 
-function swap(arr: number[], i: number, j: number): number[] {
+function swap<T>(arr: Array<T>, i: number, j: number): Array<T> {
   let temp = arr[i];
   arr[i] = arr[j];
   arr[j] = temp;
