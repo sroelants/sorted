@@ -13,7 +13,8 @@ export interface plotState {
   numOfBars: number,
   active: number,
   testing: number,
-  bars: JSX.Element[]
+  heights: number[],
+  currentlySorting: boolean
 }
 
 class Plot extends React.Component<plotProps, plotState> {
@@ -23,7 +24,7 @@ class Plot extends React.Component<plotProps, plotState> {
       numOfBars: props.numOfBars,
       bars: [],
       active: 0,
-      testing: 0,
+      heights: [],
     } 
   }
 
@@ -31,20 +32,39 @@ class Plot extends React.Component<plotProps, plotState> {
     const heights = Array(this.props.numOfBars)
           .fill(0)
           .map((x) => Math.floor(100*Math.random()));
-    const bars: JSX.Element[] = heights.map((h, i) => {
-      return <Bar 
-        key={i} 
-        active={i == this.state.active} 
-        testing={i == this.state.testing} 
-        height={h} 
-        width={1/heights.length} />
-    });
+    this.setState({heights: heights});
+  }
+
+  applySort(actions: Action[]) {
+    let [ac, ...acs] = actions;
+    if (ac.action === "active") {
+      this.setState({active: ac.position});
+    }
+    else if (ac.action === "testing") {
+      this.setState({testing: ac.position});
+    }
+    else if (ac.action === "swap" ){
+      let heights = swap(this.state.heights, ...ac.swap);
+      this.setState({heights: heights});
+    }
+    if (acs.length > 0) {
+      setTimeout(() => this.applySort(acs), 100);
+    }
+  }
 
   }
   render() { 
+    const bars: JSX.Element[] = this.state.heights.map((h, i) => {
+      return <Bar 
+        key={i} 
+        active={i === this.state.active} 
+        testing={i === this.state.testing} 
+        height={h}
+        width={1/this.state.heights.length} />
+    });
     return (
     <div className="plot">
-      <Figure bars={this.state.bars} />
+      <Figure bars={bars} />
       <Caption />
     </div>
   )
