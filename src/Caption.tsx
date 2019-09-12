@@ -7,7 +7,7 @@ export interface captionProps {
   currentlySorting: boolean
 }
 
-export interface captionState {
+interface captionState {
   startSort: () => void,
   numOfBars: number,
   currentlySorting: boolean
@@ -46,4 +46,4 @@ class Caption extends React.Component<captionProps, captionState> {
   }
 }
 
-export default Caption
+export {Caption}
