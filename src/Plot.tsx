@@ -26,7 +26,7 @@ class Plot extends React.Component<plotProps, plotState> {
       testing: -1,
       heights: [],
       currentlySorting: false
-    } 
+    }
     this.sort = this.sort.bind(this);
     this.applySort = this.applySort.bind(this);
   }
@@ -73,7 +73,7 @@ class Plot extends React.Component<plotProps, plotState> {
     return (
     <div className="plot">
       <Figure bars={bars} />
-      <Caption numOfBars={this.state.heights.length} 
+      <Caption numOfBars={this.state.numOfBars} 
         startSort={this.sort}
         currentlySorting={this.state.currentlySorting}
       />
