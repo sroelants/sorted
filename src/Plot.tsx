@@ -22,10 +22,13 @@ class Plot extends React.Component<plotProps, plotState> {
     super(props)
     this.state = {
       numOfBars: props.numOfBars,
-      bars: [],
-      active: 0,
+      active: -1,
+      testing: -1,
       heights: [],
+      currentlySorting: false
     } 
+    this.sort = this.sort.bind(this);
+    this.applySort = this.applySort.bind(this);
   }
 
   componentDidMount() {
@@ -52,7 +55,12 @@ class Plot extends React.Component<plotProps, plotState> {
     }
   }
 
+  sort() {
+    let actions = getSort("bubblesort", this.state.heights)
+    this.applySort(actions);
+    this.setState({currentlySorting: true})
   }
+
   render() { 
     const bars: JSX.Element[] = this.state.heights.map((h, i) => {
       return <Bar 
@@ -65,22 +73,18 @@ class Plot extends React.Component<plotProps, plotState> {
     return (
     <div className="plot">
       <Figure bars={bars} />
-      <Caption />
+      <Caption numOfBars={this.state.heights.length} 
+        startSort={this.sort}
+        currentlySorting={this.state.currentlySorting}
+      />
     </div>
   )
   }
 }
-
-const Caption: React.FunctionComponent = () => {
-  return (
-    <div className="caption">
-      <div style={{display: 'flex'}}>
-        <div className="caption__elements">{"Number of elements: " + 9}</div>
-        <div className="caption__steps">{"Number of steps: " + 0}</div>
-      </div>
-      <button className="caption__sortbutton">Sort!</button>
-    </div>
-    );
+  
+function getSort(alg: string, array: number[]): Action[] {
+  let arr = array.slice(0);
+  return bubbleSort(arr);
 }
 
 export default Plot
