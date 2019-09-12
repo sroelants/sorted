@@ -9,7 +9,7 @@ const App: React.FC = () => {
     <div className="main">
       <AlgorithmBar />
       <div className="content-wrapper">
-        <Plot />
+        <Plot numOfBars={50} />
       </div>
     </div>
   );
