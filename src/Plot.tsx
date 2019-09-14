@@ -1,41 +1,42 @@
 import React from 'react';
 import {Figure} from './Figure';
 import {Bar} from './Bar';
-import {Caption, captionProps} from './Caption';
+import {Caption, CaptionProps} from './Caption';
 import './Plot.sass'
 import {Action, bubbleSort, swap} from './sort';
 
-export interface plotProps {
-  numOfBars: number
+export interface PlotProps {
+  numOfBars: number,
+  algorithm: string,
+  speed: number
 }
 
-export interface plotState {
+export interface PlotState {
   numOfBars: number,
   active: number,
   testing: number,
   heights: number[],
-  currentlySorting: boolean
+  currentlySorting: boolean,
+  algorithm: string,
+  speed: number
 }
 
-class Plot extends React.Component<plotProps, plotState> {
-  constructor(props: plotProps) {
+class Plot extends React.Component<PlotProps, PlotState> {
+  constructor(props: PlotProps) {
     super(props)
     this.state = {
       numOfBars: props.numOfBars,
+      speed: props.speed,
+      algorithm: props.algorithm,
       active: -1,
       testing: -1,
-      heights: [],
+      heights: Array(props.numOfBars)
+          .fill(0)
+          .map((x) => Math.floor(100*Math.random())),
       currentlySorting: false
     }
     this.sort = this.sort.bind(this);
     this.applySort = this.applySort.bind(this);
-  }
-
-  componentDidMount() {
-    const heights = Array(this.props.numOfBars)
-          .fill(0)
-          .map((x) => Math.floor(100*Math.random()));
-    this.setState({heights: heights});
   }
 
   applySort(actions: Action[]) {
@@ -73,7 +74,7 @@ class Plot extends React.Component<plotProps, plotState> {
     return (
     <div className="plot">
       <Figure bars={bars} />
-      <Caption numOfBars={this.state.numOfBars} 
+      <Caption numOfBars={this.props.numOfBars} 
         startSort={this.sort}
         currentlySorting={this.state.currentlySorting}
       />
