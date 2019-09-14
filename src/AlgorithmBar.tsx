@@ -1,15 +1,31 @@
 import React from 'react';
 import './AlgorithmBar.sass'
 
-const AlgorithmBar: React.FunctionComponent = () => {
+export interface AlgorithmBarProps {
+  setSpeed: (speed: number) => void,
+  setNumOfBars: (num: number) => void,
+  setAlgorithm: (alg: string) => void,
+}
+
+
+  const AlgorithmBar: React.FunctionComponent<AlgorithmBarProps> = 
+    ({setAlgorithm, setNumOfBars, setSpeed}: AlgorithmBarProps) => {
   return (
     <div className="algorithmbar">
       <div className="algorithmbar__algorithms">
         <div className="algorithmbar__label">Algorithms:</div>
-        <button className="algorithmbar__algorithm algorithmbar__algorithm--active">Merge sort</button>
-        <button className="algorithmbar__algorithm">Heap sort</button>
-        <button className="algorithmbar__algorithm">Bubble sort</button>
-        <button className="algorithmbar__algorithm">Quick sort</button>
+
+          <button className="algorithmbar__algorithm algorithmbar__algorithm--active"
+            onClick={() => setAlgorithm("mergesort")}>Merge sort</button>
+
+          <button className="algorithmbar__algorithm" 
+            onClick={() => setAlgorithm("heapsort")}>Heap sort</button>
+
+          <button className="algorithmbar__algorithm"
+            onClick={() => setAlgorithm("bubblesort")}>Bubble sort</button>
+
+          <button className="algorithmbar__algorithm"
+            onClick={() => setAlgorithm("quicksort")}>Quick sort</button>
       </div>
       <div className="algorithmbar__size">
         <div className="algorithmbar__label">Size:</div>
