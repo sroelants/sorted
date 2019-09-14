@@ -44,6 +44,27 @@ class App extends React.Component<AppProps, AppState> {
   }
 
   setNumOfBars(numOfBars: number) {
+    const diff = numOfBars - this.state.numOfBars;
+    // Change heights as well
+    if (diff > 0) {
+      const extraHeights = Array(100)
+        .fill(0)
+        .map((x) => Math.floor(100*Math.random()))
+      this.setState((prevState) => {
+        return {
+          heights: prevState.heights.concat(extraHeights),
+          numOfBars: numOfBars
+        }
+      });
+    } else {
+      this.setState((prevState) => {
+        return {
+          heights: prevState.heights.slice(0, numOfBars),
+          numOfBars: numOfBars
+        }
+      });
+    }
+
     this.setState({numOfBars: numOfBars});
   }
 
