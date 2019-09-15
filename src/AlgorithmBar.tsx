@@ -29,13 +29,13 @@ export interface AlgorithmBarProps {
       </div>
       <div className="algorithmbar__size">
         <div className="algorithmbar__label">Size:</div>
-        <input type="range" min="10" max="1000" step="10"
+        <input type="range" min="10" max="100" step="1"
           className="algorithmbar__input"
           onChange={(ev) => setNumOfBars(ev.target.valueAsNumber)}/>
       </div>
       <div className="algorithmbar__speed">
       <div className="algorithmbar__label">Speed:</div>
-      <input type="range" min="0.1" max="10" step="0.1"
+      <input type="range" min="0.1" max="5" step="0.1"
         className="algorithmbar__input"
         onChange={(ev) => setSpeed(ev.target.valueAsNumber)}/>
       </div>

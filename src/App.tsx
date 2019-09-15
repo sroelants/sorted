@@ -22,12 +22,12 @@ class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
     this.state = {
-      numOfBars: 100,
+      numOfBars: 50,
       algorithm: "bubblesort",
       speed: 1,
       active: -1,
       testing: -1,
-      heights: Array(100)
+      heights: Array(50)
           .fill(0)
           .map((x) => Math.floor(100*Math.random())),
       currentlySorting: false
@@ -47,7 +47,7 @@ class App extends React.Component<AppProps, AppState> {
     const diff = numOfBars - this.state.numOfBars;
     // Change heights as well
     if (diff > 0) {
-      const extraHeights = Array(100)
+      const extraHeights = Array(diff)
         .fill(0)
         .map((x) => Math.floor(100*Math.random()))
       this.setState((prevState) => {
@@ -85,7 +85,7 @@ class App extends React.Component<AppProps, AppState> {
       this.setState({heights: heights});
     }
     if (acs.length > 0) {
-      setTimeout(() => this.applySort(acs), 100);
+      setTimeout(() => this.applySort(acs), 50 / this.state.speed);
     }
   }
 
