@@ -1,21 +1,20 @@
-import React from 'react';
-import './App.sass';
-import Landing from './Landing'
-import {Plot, PlotProps} from './Plot'
-import {AlgorithmBar, AlgorithmBarProps} from './AlgorithmBar'
-import {Action, bubbleSort, swap} from './sort'
+import React from "react";
+import "./App.sass";
+import Landing from "./Landing";
+import { Plot, PlotProps } from "./Plot";
+import { AlgorithmBar, AlgorithmBarProps } from "./AlgorithmBar";
+import { bubbleSortGenerator, swap } from "./sort";
 
-interface AppProps {
-}
+interface AppProps {}
 
 interface AppState {
-  numOfBars: number
-  algorithm: string
-  speed: number
-  active: number,
-  testing: number,
-  heights: number[],
-  currentlySorting: boolean,
+  numOfBars: number;
+  algorithm: string;
+  speed: number;
+  active: number;
+  testing: number;
+  heights: number[];
+  currentlySorting: boolean;
 }
 
 class App extends React.Component<AppProps, AppState> {
@@ -28,19 +27,17 @@ class App extends React.Component<AppProps, AppState> {
       active: -1,
       testing: -1,
       heights: Array(50)
-          .fill(0)
-          .map((x) => Math.floor(100*Math.random())),
+        .fill(0)
+        .map(x => Math.floor(100 * Math.random())),
       currentlySorting: false
-    }
+    };
     this.setSpeed = this.setSpeed.bind(this);
     this.setNumOfBars = this.setNumOfBars.bind(this);
     this.setAlgorithm = this.setAlgorithm.bind(this);
-    this.performSort = this.performSort.bind(this);
-    this.applySort = this.applySort.bind(this);
   }
 
   setSpeed(speed: number) {
-    this.setState({speed: speed});
+    this.setState({ speed: speed });
   }
 
   setNumOfBars(numOfBars: number) {
@@ -49,50 +46,27 @@ class App extends React.Component<AppProps, AppState> {
     if (diff > 0) {
       const extraHeights = Array(diff)
         .fill(0)
-        .map((x) => Math.floor(100*Math.random()))
-      this.setState((prevState) => {
+        .map(x => Math.floor(100 * Math.random()));
+      this.setState(prevState => {
         return {
           heights: prevState.heights.concat(extraHeights),
           numOfBars: numOfBars
-        }
+        };
       });
     } else {
-      this.setState((prevState) => {
+      this.setState(prevState => {
         return {
           heights: prevState.heights.slice(0, numOfBars),
           numOfBars: numOfBars
-        }
+        };
       });
     }
 
-    this.setState({numOfBars: numOfBars});
+    this.setState({ numOfBars: numOfBars });
   }
 
   setAlgorithm(algorithm: string) {
-    this.setState({algorithm: algorithm});
-  }
-
-  applySort(actions: Action[]) {
-    let [ac, ...acs] = actions;
-    if (ac.action === "active") {
-      this.setState({active: ac.position});
-    }
-    else if (ac.action === "testing") {
-      this.setState({testing: ac.position});
-    }
-    else if (ac.action === "swap" ){
-      let heights = swap(this.state.heights, ...ac.swap);
-      this.setState({heights: heights});
-    }
-    if (acs.length > 0) {
-      setTimeout(() => this.applySort(acs), 50 / this.state.speed);
-    }
-  }
-
-  performSort() {
-    let actions = getSort("bubblesort", this.state.heights)
-    this.setState({currentlySorting: true})
-    this.applySort(actions);
+    this.setState({ algorithm: algorithm });
   }
 
   render() {
@@ -100,7 +74,7 @@ class App extends React.Component<AppProps, AppState> {
       setSpeed: this.setSpeed,
       setAlgorithm: this.setAlgorithm,
       setNumOfBars: this.setNumOfBars
-    }
+    };
 
     let plotProps: PlotProps = {
       numOfBars: this.state.numOfBars,
@@ -108,23 +82,18 @@ class App extends React.Component<AppProps, AppState> {
       active: this.state.active,
       testing: this.state.testing,
       currentlySorting: this.state.currentlySorting,
-      startSort: this.performSort
-    }
+      startSort: () => {}
+    };
 
-  return (
-    <div className="main">
-      <AlgorithmBar {...ABProps} />
-      <div className="content-wrapper">
-        <Plot {...plotProps} />
+    return (
+      <div className="main">
+        <AlgorithmBar {...ABProps} />
+        <div className="content-wrapper">
+          <Plot {...plotProps} />
+        </div>
       </div>
-    </div>
     );
   }
-}
-
-function getSort(alg: string, array: number[]): Action[] {
-  let arr = array.slice(0);
-  return bubbleSort(arr);
 }
 
 export default App;
