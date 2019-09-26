@@ -1,4 +1,4 @@
-import { swap } from "./util";
+import { swap } from "../utils/util";
 
 // Heapsort:
 // 1. Arrange the array into a max heap. (Heapify)

@@ -1,4 +1,4 @@
-import { isSorted, range } from "./util";
+import { isSorted, range } from "../utils/util";
 
 // In order to easily implement the sort as an algorithm, we implement a bottom-
 // up merge sort (non-recursive):

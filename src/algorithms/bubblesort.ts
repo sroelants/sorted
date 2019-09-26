@@ -1,4 +1,4 @@
-import { isSorted, swap } from "./util";
+import { isSorted, swap } from "../utils/util";
 
 function* bubbleSortGenerator(array: number[]): Generator {
   while (!isSorted(array)) {
