@@ -3,7 +3,17 @@ import "./App.sass";
 import Landing from "./Landing";
 import { Plot, PlotProps } from "./Plot";
 import { AlgorithmBar, AlgorithmBarProps } from "./AlgorithmBar";
-import { bubbleSortGenerator, swap } from "./sort";
+import { bubbleSortGenerator } from "./algorithms/bubblesort";
+import { mergeSortGenerator } from "./algorithms/mergesort";
+import { heapify, bubbleDown } from "./algorithms/heapsort";
+import { randArray } from "./algorithms/util";
+
+const sortGens: any = {
+  bubblesort: bubbleSortGenerator,
+  mergesort: mergeSortGenerator,
+  headsort: mergeSortGenerator,
+  quicksort: mergeSortGenerator
+};
 
 interface AppProps {}
 
@@ -11,29 +21,36 @@ interface AppState {
   numOfBars: number;
   algorithm: string;
   speed: number;
-  active: number;
-  testing: number;
+  active: number[];
+  testing: number[];
   heights: number[];
   currentlySorting: boolean;
+  finished: boolean;
+  sortGen: Generator;
 }
 
 class App extends React.Component<AppProps, AppState> {
   constructor(props: AppProps) {
     super(props);
+    let heights = randArray(50);
     this.state = {
+      finished: false,
       numOfBars: 50,
-      algorithm: "bubblesort",
+      algorithm: "mergesort",
       speed: 1,
-      active: -1,
-      testing: -1,
-      heights: Array(50)
-        .fill(0)
-        .map(x => Math.floor(100 * Math.random())),
-      currentlySorting: false
+      active: [],
+      testing: [],
+      heights: heights,
+      currentlySorting: false,
+      sortGen: mergeSortGenerator(heights)
     };
     this.setSpeed = this.setSpeed.bind(this);
     this.setNumOfBars = this.setNumOfBars.bind(this);
     this.setAlgorithm = this.setAlgorithm.bind(this);
+    this.startSort = this.startSort.bind(this);
+    this.pauseSort = this.pauseSort.bind(this);
+    this.restartSort = this.restartSort.bind(this);
+    this.sort = this.sort.bind(this);
   }
 
   setSpeed(speed: number) {
@@ -42,31 +59,52 @@ class App extends React.Component<AppProps, AppState> {
 
   setNumOfBars(numOfBars: number) {
     const diff = numOfBars - this.state.numOfBars;
-    // Change heights as well
-    if (diff > 0) {
-      const extraHeights = Array(diff)
-        .fill(0)
-        .map(x => Math.floor(100 * Math.random()));
-      this.setState(prevState => {
-        return {
-          heights: prevState.heights.concat(extraHeights),
-          numOfBars: numOfBars
-        };
-      });
-    } else {
-      this.setState(prevState => {
-        return {
-          heights: prevState.heights.slice(0, numOfBars),
-          numOfBars: numOfBars
-        };
-      });
-    }
-
-    this.setState({ numOfBars: numOfBars });
+    const newHeights =
+      diff > 0
+        ? this.state.heights.concat(randArray(diff))
+        : this.state.heights.slice(0, numOfBars);
+    this.setState(state => {
+      let algorithm: string = state.algorithm;
+      return {
+        heights: newHeights,
+        numOfBars: numOfBars,
+        sortGen: sortGens[algorithm](newHeights)
+      };
+    });
   }
 
   setAlgorithm(algorithm: string) {
-    this.setState({ algorithm: algorithm });
+    this.setState({
+      algorithm: algorithm,
+      sortGen: sortGens[algorithm](this.state.heights)
+    });
+  }
+
+  startSort() {
+    this.setState({ currentlySorting: true }, this.sort);
+  }
+
+  pauseSort() {
+    this.setState({ currentlySorting: false });
+  }
+
+  restartSort() {
+    let heights = randArray(this.state.numOfBars);
+    let sortGen = sortGens[this.state.algorithm](heights);
+    this.setState({ heights: heights, sortGen: sortGen }, this.startSort);
+  }
+
+  sort() {
+    let { value, done } = this.state.sortGen.next();
+    let heights: number[] = value.array;
+    let active: number[] = value.active;
+    this.setState({
+      heights: heights,
+      active: active
+    });
+    if (done) this.setState({ finished: true, currentlySorting: false });
+    else if (this.state.currentlySorting)
+      setTimeout(this.sort, 100 / this.state.speed);
   }
 
   render() {
@@ -82,7 +120,10 @@ class App extends React.Component<AppProps, AppState> {
       active: this.state.active,
       testing: this.state.testing,
       currentlySorting: this.state.currentlySorting,
-      startSort: () => {}
+      finished: this.state.finished,
+      startSort: this.startSort,
+      pauseSort: this.pauseSort,
+      restartSort: this.restartSort
     };
 
     return (

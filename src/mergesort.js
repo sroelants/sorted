@@ -1,0 +1,33 @@
+"use strict";
+exports.__esModule = true;
+var sort_1 = require("./sort");
+var arr = [4, 5, 100, 2, -1, 3, 17, 0];
+var msg = sort_1.mergeSortGenerator(arr);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+console.log(msg.next().value.array);
+// for (const x of msg) {
+//   console.log(x);
+//   console.log("Next!");
+// }

@@ -1,37 +1,11 @@
-// Sorting algorithms
+import { isSorted, range } from "./util";
 
-// Bubble sort ////////////////////////////////////////////////////////////////
-function* bubbleSortGenerator(array: number[]) {
-  while (!isSorted(array)) {
-    for (let i = 0; i < array.length; i++) {
-      yield { array: array, active: i, testing: i + 1 };
-      if (array[i] > array[i + 1]) {
-        array = swap(array, i, i + 1);
-        yield { array: array, active: i + 1, testing: i };
-      }
-    }
-  }
-  return { array: array, active: -1, testing: -1 };
-}
-
-function bubbleSort(array: number[]): number[] {
-  while (!isSorted(array)) {
-    for (let i = 0; i < array.length; i++) {
-      if (array[i] < array[i + 1]) {
-        array = swap(array, i, i + 1);
-      }
-    }
-  }
-  return array;
-}
-
-// Merge sort /////////////////////////////////////////////////////////////////
 // In order to easily implement the sort as an algorithm, we implement a bottom-
 // up merge sort (non-recursive):
 // First merge elements pairwise, then merge the paired lists pairwise, then
 // the 4-element lists pairwise, etc...
 
-function* mergeSortGenerator(array: number[]): any {
+function* mergeSortGenerator(array: number[]): Generator {
   let N = array.length;
   if (isSorted(array)) return array;
 
@@ -56,16 +30,17 @@ function* mergeSortGenerator(array: number[]): any {
         // Splice in the intermediate result for visualisation.
         let semiMerged = merged.concat(arr1).concat(arr2);
         array.splice(i * n, semiMerged.length, ...semiMerged);
-        yield { array: array };
+        yield { array: array, active: range(i * n, (i + 1) * n) };
       }
       // Add remaining elements.
       if (arr1.length) merged = merged.concat(arr1);
       else merged = merged.concat(arr2);
 
       array.splice(i * n, merged.length, ...merged); // insert at position i*n, replace n elements
-      yield { array: array };
+      yield { array: array, active: [] };
     }
   }
+  return { array: array, active: [] };
 }
 
 function mergeSort(array: number[]): number[] {
@@ -91,28 +66,4 @@ function mergeSort(array: number[]): number[] {
   }
 }
 
-// Helper functions ///////////////////////////////////////////////////////////
-
-function isSorted(array: number[]): boolean {
-  let sorted = true;
-  for (let i = 1; i < array.length; i++) {
-    if (array[i - 1] > array[i]) return false;
-  }
-  return sorted;
-}
-
-function swap<T>(array: Array<T>, i: number, j: number): Array<T> {
-  const temp = array[i];
-  array[i] = array[j];
-  array[j] = temp;
-  return array;
-}
-
-export {
-  isSorted,
-  swap,
-  bubbleSortGenerator,
-  bubbleSort,
-  mergeSort,
-  mergeSortGenerator
-};
+export { mergeSort, mergeSortGenerator };

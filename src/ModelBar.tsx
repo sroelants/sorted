@@ -1,6 +1,4 @@
-import React from 'react';
-
-
+import React from "react";
 
 const AlgorithmBar: React.FunctionComponent = () => {
   return (
@@ -14,7 +12,8 @@ const AlgorithmBar: React.FunctionComponent = () => {
       <input type="range" min="10" max="1000" />
       {"Speed: "}
       <input type="range" min="10" max="1000" />
-    </div>);
-}
+    </div>
+  );
+};
 
-export default AlgorithmBar
+export default AlgorithmBar;

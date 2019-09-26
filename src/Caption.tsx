@@ -1,37 +1,47 @@
 import React from "react";
-import './Plot.sass';
+import "./Plot.sass";
 
 export interface CaptionProps {
   startSort: () => void;
-  numOfBars: number
-  currentlySorting: boolean
+  pauseSort: () => void;
+  restartSort: () => void;
+  numOfBars: number;
+  currentlySorting: boolean;
+  finished: boolean;
 }
 
-interface captionState {
-  startSort: () => void,
-  numOfBars: number,
-  currentlySorting: boolean
-}
+const Caption: React.FC<CaptionProps> = ({
+  startSort,
+  pauseSort,
+  restartSort,
+  numOfBars,
+  currentlySorting,
+  finished
+}: CaptionProps) => {
+  let label = finished ? "Restart" : currentlySorting ? "Pause" : "Sort";
 
-const Caption: React.FC<CaptionProps>  = 
-  ({startSort, numOfBars, currentlySorting}: CaptionProps) => {
-      let sortButton: JSX.Element = currentlySorting ? 
-        (<button className="caption__sortbutton caption__sortbutton--disabled">
-          {"Sorting..."}
-         </button>) : 
-        (<button className="caption__sortbutton" 
-          onClick={() => {
-            startSort()
-          }}>Sort!</button>);
-      return (
-      <div className="caption">
-        <div style={{display: 'flex'}}>
-          <div className="caption__elements">{"Number of elements: " + numOfBars}</div>
-          <div className="caption__steps">{"Number of steps: " + 0}</div>
+  let clickHandler;
+  if (finished) clickHandler = restartSort;
+  else if (currentlySorting) clickHandler = pauseSort;
+  else clickHandler = startSort;
+
+  let sortButton: JSX.Element = (
+    <button className="caption__sortbutton" onClick={clickHandler}>
+      {label}
+    </button>
+  );
+
+  return (
+    <div className="caption">
+      <div style={{ display: "flex" }}>
+        <div className="caption__elements">
+          {"Number of elements: " + numOfBars}
         </div>
-        {sortButton}
+        <div className="caption__steps">{"Number of steps: " + 0}</div>
       </div>
-      );
-  }
+      {sortButton}
+    </div>
+  );
+};
 
-export {Caption}
+export { Caption };

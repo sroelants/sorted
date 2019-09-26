@@ -1,4 +1,11 @@
-import { swap, isSorted, bubbleSortGenerator, bubbleSort } from "./sort";
+import {
+  swap,
+  isSorted,
+  bubbleSortGenerator,
+  bubbleSort,
+  mergeSort,
+  mergeSortGenerator
+} from "./sort";
 
 // isSorted tests
 
@@ -30,40 +37,89 @@ test("swap([1,2,3], 0, 1) returns [2,1,3]", () => {
 
 // bubbleSort tests
 test("bubbleSortGenerator([]).next() returns [] and 'done: true'", () => {
-  expect(bubbleSortGenerator([]).next()).toEqual({ value: [], done: true });
+  let bsg = bubbleSortGenerator([]);
+  let response = bsg.next();
+  expect(response.value.array).toEqual([]);
+  expect(response.done).toEqual(true);
 });
 
 test("bubbleSortGenerator([1]).next() returns [1] and 'done: true'", () => {
-  expect(bubbleSortGenerator([1]).next()).toEqual({ value: [1], done: true });
+  let bsg = bubbleSortGenerator([1]);
+  let response = bsg.next();
+  expect(response.value.array).toEqual([1]);
+  expect(response.done).toEqual(true);
 });
 
 test("bubbleSortGenerator([1,2]).next() returns [1,2] and 'done: true'", () => {
-  expect(bubbleSortGenerator([1, 2]).next()).toEqual({
-    value: [1, 2],
-    done: true
-  });
+  let bsg = bubbleSortGenerator([1, 2]);
+  let response = bsg.next();
+  expect(response.value.array).toEqual([1, 2]);
+  expect(response.done).toEqual(true);
 });
 
 test("bubbleSort([3,2,1] returns [1,2,3])", () => {
   expect(bubbleSort([1, 2, 3])).toEqual([1, 2, 3]);
 });
 
-test("bubbleSortGenerator([2,1]).next() returns [1,2] and 'done: false'", () => {
-  expect(bubbleSortGenerator([2, 1]).next()).toEqual({
-    value: [1, 2],
-    done: false
-  });
+test("bubbleSortGenerator([2,1]).next() run twice returns [1,2] and 'done: false'", () => {
+  let bsg = bubbleSortGenerator([2, 1]);
+  let response = bsg.next();
+  bsg.next();
+  expect(response.value.array).toEqual([1, 2]);
+  expect(response.done).toEqual(false);
 });
 
-test("bubbleSortGenerator([2,1]).next() run twice returns [1,2] and 'done: true'", () => {
+test("bubbleSortGenerator([2,1]).next() run 4 times returns [1,2] and 'done: true'", () => {
   let bsg = bubbleSortGenerator([2, 1]);
   bsg.next();
-  expect(bsg.next()).toEqual({
-    value: [1, 2],
-    done: false
-  });
+  bsg.next();
+  bsg.next();
+  let response = bsg.next();
+  expect(response.value.array).toEqual([1, 2]);
+  expect(response.done).toEqual(true);
 });
 
-// test("bubbleSortGenerator([3,2,1]).next() returns [2,3,1] and 'done: false'", () => {
-//   expect(bubbleSortGenerator([]).next()).toEqual({ value: [], done: true });
-// });
+//mergeSort tests
+test("mergeSort([] returns [])", () => {
+  expect(mergeSort([])).toEqual([]);
+});
+
+test("mergeSort([1] returns [1])", () => {
+  expect(mergeSort([1])).toEqual([1]);
+});
+
+test("mergeSort([1,2,3] returns [1,2,3])", () => {
+  expect(mergeSort([1, 2, 3])).toEqual([1, 2, 3]);
+});
+
+test("mergeSort([3,2,1] returns [1,2,3])", () => {
+  expect(mergeSort([3, 2, 1])).toEqual([1, 2, 3]);
+});
+
+// mergeSortGenerator tests
+test("mergeSortGenerator([]).next() returns [] and 'done: true'", () => {
+  let msg = mergeSortGenerator([]);
+  let response = msg.next();
+  expect(response.value.array).toEqual([]);
+  expect(response.done).toEqual(true);
+});
+
+test("mergeSortGenerator([1]).next() returns [] and 'done: true'", () => {
+  let msg = mergeSortGenerator([1]);
+  let response = msg.next();
+  expect(response.value.array).toEqual([1]);
+  expect(response.done).toEqual(true);
+});
+test("mergeSortGenerator([1,2]).next() returns [] and 'done: true'", () => {
+  let msg = mergeSortGenerator([1, 2]);
+  let response = msg.next();
+  expect(response.value.array).toEqual([1, 2]);
+  expect(response.done).toEqual(true);
+});
+
+test("mergeSortGenerator([1,2,3]).next() returns [] and 'done: true'", () => {
+  let msg = mergeSortGenerator([1, 2, 3]);
+  let response = msg.next();
+  expect(response.value.array).toEqual([1, 2, 3]);
+  expect(response.done).toEqual(true);
+});
