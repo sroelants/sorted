@@ -7,7 +7,7 @@ import { isSorted, range } from "../utils/util";
 
 function* mergeSortGenerator(array: number[]): Generator {
   let N = array.length;
-  if (isSorted(array)) return array;
+  if (isSorted(array)) return { array: array, active: [] };
 
   // When sweeping the array, aim for 2*N elements, so we're sure to include any
   // remaining elements.
@@ -36,7 +36,8 @@ function* mergeSortGenerator(array: number[]): Generator {
       if (arr1.length) merged = merged.concat(arr1);
       else merged = merged.concat(arr2);
 
-      array.splice(i * n, merged.length, ...merged); // insert at position i*n, replace n elements
+      // insert at position i*n, replace n elements
+      array.splice(i * n, merged.length, ...merged);
       yield { array: array, active: [] };
     }
   }

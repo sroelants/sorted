@@ -11,24 +11,38 @@ import { swap } from "../utils/util";
  * Turn an almost-max heap `array` into a max heap by bubbling down the element
  * at `index`.
  *
+ * Note: If the input array is not an "almost-heap", ie, up to a displaced
+ * root node, the result will probably not be an actual max-heap. bubbleDown
+ * simply restores the heap property of a modified heap.
+ *
  * @param {number[]} array - The array to heapify.
  * @param {number} index - The position of the out-of-place element to bubble
  * down
  *
  * @return {array[]} - The heapified array.
  **/
-function bubbleDown(array: number[], index: number): number[] {
-  const lChildIndex = index * 2;
-  const rChildIndex = index * 2 + 1;
+function bubbleDown(array: number[], index: number, max: number): number[] {
+  const lChildIndex = index * 2 + 1;
+  const rChildIndex = index * 2 + 2;
 
   // If there are no children, do nothing.
-  if (lChildIndex >= array.length) return array;
+  if (lChildIndex >= max) return array;
 
   const largestChildIndex =
-    array[lChildIndex] > array[rChildIndex] ? lChildIndex : rChildIndex;
+    rChildIndex >= max
+      ? lChildIndex //If no right child, left is largest by default, else:
+      : array[lChildIndex] > array[rChildIndex]
+      ? lChildIndex
+      : rChildIndex;
+
+  if (array[index] >= array[largestChildIndex]) return array;
 
   // Recursively bubble down
-  return bubbleDown(swap(array, index, largestChildIndex), largestChildIndex);
+  return bubbleDown(
+    swap(array, index, largestChildIndex),
+    largestChildIndex,
+    max
+  );
 }
 
 /**
@@ -41,10 +55,79 @@ function bubbleDown(array: number[], index: number): number[] {
 function heapify(array: number[]): number[] {
   // Starting from the bottom, bubble down every node.
   for (let i = array.length - 1; i >= 0; i--) {
-    array = bubbleDown(array, i);
+    array = bubbleDown(array, i, array.length);
   }
 
   return array;
 }
 
-export { heapify, bubbleDown };
+/**
+ * Sort an array using heap sort.
+ *
+ * @param {number[]} array - The array that needs to be sorted.
+ * @return {number[]} - The sorted array.
+ **/
+function heapsort(array: number[]): number[] {
+  array = heapify(array);
+  for (let i = array.length - 1; i > 0; i--) {
+    array = swap(array, 0, i);
+    array = bubbleDown(array, 0, i);
+  }
+  return array;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Heap sort generator
+///////////////////////////////////////////////////////////////////////////////
+
+/**
+ * Generator that yields individual heap sort steps.
+ *
+ * @param {number[]} array - The array that needs to be sorted.
+ * @return {Generator<number[]>} - The sorted array.
+ **/
+function* heapSortGenerator(array: number[]): Generator<number[]> {
+  // Create max heap
+  for (let i = array.length - 1; i >= 0; i--) {
+    yield* bubbleDownGenerator(array, i, array.length);
+    array = bubbleDown(array, i, array.length);
+  }
+
+  for (let i = array.length - 1; i > 0; i--) {
+    // Place root node in sorted position
+    array = swap(array, 0, i);
+    yield array;
+    yield* bubbleDownGenerator(array, 0, i);
+    array = bubbleDown(array, 0, i);
+  }
+}
+
+function* bubbleDownGenerator(
+  array: number[],
+  index: number,
+  max: number
+): any {
+  const lChildIndex = index * 2 + 1;
+  const rChildIndex = index * 2 + 2;
+
+  // If there are no children, do nothing.
+  if (lChildIndex >= max) yield array;
+
+  const largestChildIndex =
+    rChildIndex >= max
+      ? lChildIndex //If no right child, left is largest by default, else:
+      : array[lChildIndex] > array[rChildIndex]
+      ? lChildIndex
+      : rChildIndex;
+
+  if (array[index] >= array[largestChildIndex]) yield array;
+
+  // Recursively bubble down
+  yield* bubbleDownGenerator(
+    swap(array, index, largestChildIndex),
+    largestChildIndex,
+    max
+  );
+}
+
+export { heapify, bubbleDown, heapsort };

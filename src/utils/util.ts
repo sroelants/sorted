@@ -23,4 +23,15 @@ function randArray(length: number, min: number = 0, max: number = 100) {
     .map(x => min + Math.floor((max - min) * Math.random()));
 }
 
-export { isSorted, swap, range, randArray };
+function isMaxHeap(array: number[]): boolean {
+  let isHeap = true;
+  for (let i = 0; i < array.length; i++) {
+    if (2 * i + 1 < array.length)
+      isHeap = isHeap && array[i] >= array[2 * i + 1];
+    if (2 * i + 2 < array.length)
+      isHeap = isHeap && array[i] >= array[2 * i + 2];
+  }
+  return isHeap;
+}
+
+export { isSorted, swap, range, randArray, isMaxHeap };
