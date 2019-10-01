@@ -1,9 +1,9 @@
-import {heapify, bubbleDown, heapsort} from "../../algorithms/heapsort"
-import {isMaxHeap} from "../../utils/util"
+import {heapify, bubbleDown, heapsort, heapSortGenerator} from "../../algorithms/heapsort"
+import {isMaxHeap, isSorted} from "../../utils/util"
 
 // bubbleDown tests
 //
-test("bubbleDown([], _) returns []", () => {
+test("bubbleDown([], _, 0) returns []", () => {
   expect(bubbleDown([], 0)).toEqual([]);
 });
 
@@ -62,6 +62,7 @@ test("heapify([1,2,3,4,5,6]) is a max heap", () => {
 });
 
 // heapsort tests
+
 test("heapsort([]) returns []", () => {
   expect(heapsort([])).toEqual([]);
 });
@@ -81,8 +82,49 @@ test("heapsort([7,-1,3,3,5,2,1,1000]) returns [-1,1,2,3,3,5,7,1000]",
 });
 
 // heapSortGenerator tests
-// test("heapSortGenerator([]).next() returns done:true", () => {
-//   let hsg = heapSortGenerator([]);
-//   expect(hsg.done).toEqual(true);
-// });
+
+test("heapSortGenerator([]).next() returns done:true", () => {
+  let hsg = heapSortGenerator([]);
+  expect(hsg.next().done).toEqual(true);
+});
+
+test("heapSortGenerator([1]).next() returns value.array = [1] and done:false", 
+  () => {
+  let hsg = heapSortGenerator([1]);
+  let retval = hsg.next()
+  expect(retval.value.array).toEqual([1]);
+  expect(retval.done).toEqual(false);
+});
+
+test("heapSortGenerator([1, 2]).next() returns value.array = [1, 2] and done:false", 
+  () => {
+  let hsg = heapSortGenerator([1,2]);
+  let retval = hsg.next()
+  expect(retval.value.array).toEqual([1, 2]);
+  expect(retval.done).toEqual(false);
+});
+
+test("heapSortGenerator([3, 1, 2]).next() returns value.array = [1, 2, 3] and done:false", 
+  () => {
+  let hsg = heapSortGenerator([3,1,2]);
+  let retval = hsg.next();
+    while (!retval.done) {
+      retval = hsg.next();
+    }
+
+  expect(isSorted(retval.value.array)).toEqual(true);
+  expect(retval.done).toEqual(true);
+});
+
+test("heapSortGenerator([7,-1,3,3,5,2,1,1000]).next() returns sorted array and done:true", 
+  () => {
+  let hsg = heapSortGenerator([7,-1,3,3,5,2,1,1000]);
+  let retval = hsg.next();
+    while (!retval.done) {
+      retval = hsg.next();
+    }
+
+  expect(isSorted(retval.value.array)).toEqual(true);
+  expect(retval.done).toEqual(true);
+});
 
