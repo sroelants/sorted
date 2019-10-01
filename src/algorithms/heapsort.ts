@@ -21,7 +21,11 @@ import { swap } from "../utils/util";
  *
  * @return {array[]} - The heapified array.
  **/
-function bubbleDown(array: number[], index: number, max: number): number[] {
+function bubbleDown(
+  array: number[],
+  index: number,
+  max: number = array.length
+): number[] {
   const lChildIndex = index * 2 + 1;
   const rChildIndex = index * 2 + 2;
 
@@ -35,9 +39,10 @@ function bubbleDown(array: number[], index: number, max: number): number[] {
       ? lChildIndex
       : rChildIndex;
 
+  // If element at index is larger than both children, we are done bubbling.
   if (array[index] >= array[largestChildIndex]) return array;
 
-  // Recursively bubble down
+  // Swap elements and recursively bubble down
   return bubbleDown(
     swap(array, index, largestChildIndex),
     largestChildIndex,
@@ -55,7 +60,7 @@ function bubbleDown(array: number[], index: number, max: number): number[] {
 function heapify(array: number[]): number[] {
   // Starting from the bottom, bubble down every node.
   for (let i = array.length - 1; i >= 0; i--) {
-    array = bubbleDown(array, i, array.length);
+    array = bubbleDown(array, i);
   }
 
   return array;
@@ -86,48 +91,52 @@ function heapsort(array: number[]): number[] {
  * @param {number[]} array - The array that needs to be sorted.
  * @return {Generator<number[]>} - The sorted array.
  **/
-function* heapSortGenerator(array: number[]): Generator<number[]> {
+function* heapSortGenerator(array: number[]) {
   // Create max heap
   for (let i = array.length - 1; i >= 0; i--) {
-    yield* bubbleDownGenerator(array, i, array.length);
-    array = bubbleDown(array, i, array.length);
+    array = (yield* bubbleDownGenerator(array, i)).array;
+    yield { array: array };
+    // array = bubbleDown(array, i);
   }
 
   for (let i = array.length - 1; i > 0; i--) {
     // Place root node in sorted position
     array = swap(array, 0, i);
-    yield array;
-    yield* bubbleDownGenerator(array, 0, i);
-    array = bubbleDown(array, 0, i);
+    yield { array: array };
+    // Bubble down the new root
+    array = (yield* bubbleDownGenerator(array, 0, i)).array;
   }
+  return { array: array };
 }
 
 function* bubbleDownGenerator(
   array: number[],
   index: number,
-  max: number
+  max: number = array.length
 ): any {
-  const lChildIndex = index * 2 + 1;
-  const rChildIndex = index * 2 + 2;
+  while (index < max) {
+    const lChildIndex = index * 2 + 1;
+    const rChildIndex = index * 2 + 2;
 
-  // If there are no children, do nothing.
-  if (lChildIndex >= max) yield array;
+    // If there are no children, do nothing.
+    if (lChildIndex >= max) {
+      return { array: array };
+    }
 
-  const largestChildIndex =
-    rChildIndex >= max
-      ? lChildIndex //If no right child, left is largest by default, else:
-      : array[lChildIndex] > array[rChildIndex]
-      ? lChildIndex
-      : rChildIndex;
+    const largestChildIndex =
+      rChildIndex >= max
+        ? lChildIndex //If no right child, left is largest by default, else:
+        : array[lChildIndex] > array[rChildIndex]
+        ? lChildIndex
+        : rChildIndex;
 
-  if (array[index] >= array[largestChildIndex]) yield array;
-
-  // Recursively bubble down
-  yield* bubbleDownGenerator(
-    swap(array, index, largestChildIndex),
-    largestChildIndex,
-    max
-  );
+    if (array[index] >= array[largestChildIndex]) {
+      return { array: array };
+    }
+    array = swap(array, index, largestChildIndex);
+    yield { array: array };
+    index = largestChildIndex;
+  }
 }
 
-export { heapify, bubbleDown, heapsort };
+export { heapify, bubbleDown, heapsort, heapSortGenerator };
