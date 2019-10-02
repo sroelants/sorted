@@ -37,7 +37,6 @@ const Caption: React.FC<CaptionProps> = ({
         <div className="caption__elements">
           {"Number of elements: " + numOfBars}
         </div>
-        <div className="caption__steps">{"Number of steps: " + 0}</div>
       </div>
       {sortButton}
     </div>
