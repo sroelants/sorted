@@ -92,7 +92,12 @@ class App extends React.Component<AppProps, AppState> {
   restartSort() {
     let heights = randArray(this.state.numOfBars);
     let sortGen = sortGens[this.state.algorithm](heights);
-    this.setState({ heights: heights, sortGen: sortGen }, this.startSort);
+    this.setState({
+      heights: heights,
+      sortGen: sortGen,
+      currentlySorting: false,
+      finished: false
+    });
   }
 
   sort() {
