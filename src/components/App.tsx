@@ -6,6 +6,7 @@ import { AlgorithmBar, AlgorithmBarProps } from "./AlgorithmBar";
 import { bubbleSortGenerator } from "../algorithms/bubblesort";
 import { mergeSortGenerator } from "../algorithms/mergesort";
 import { heapSortGenerator } from "../algorithms/heapsort";
+import { quickSortGenerator } from "../algorithms/quicksort";
 import { heapify, bubbleDown } from "../algorithms/heapsort";
 import { randArray } from "../utils/util";
 
@@ -13,7 +14,7 @@ const sortGens: any = {
   bubblesort: bubbleSortGenerator,
   mergesort: mergeSortGenerator,
   heapsort: heapSortGenerator,
-  quicksort: mergeSortGenerator
+  quicksort: quickSortGenerator
 };
 
 interface AppProps {}
@@ -37,13 +38,13 @@ class App extends React.Component<AppProps, AppState> {
     this.state = {
       finished: false,
       numOfBars: 50,
-      algorithm: "mergesort",
-      speed: 1,
+      algorithm: "",
+      speed: 2,
       active: [],
       testing: [],
       heights: heights,
       currentlySorting: false,
-      sortGen: mergeSortGenerator(heights)
+      sortGen: bubbleSortGenerator([])
     };
     this.setSpeed = this.setSpeed.bind(this);
     this.setNumOfBars = this.setNumOfBars.bind(this);
@@ -104,9 +105,11 @@ class App extends React.Component<AppProps, AppState> {
     let { value, done } = this.state.sortGen.next();
     let heights: number[] = value.array;
     let active: number[] = value.active ? value.active : [];
+    let testing: number[] = value.testing ? value.testing : [];
     this.setState({
       heights: heights,
-      active: active
+      active: active,
+      testing: testing
     });
     if (done) this.setState({ finished: true, currentlySorting: false });
     else if (this.state.currentlySorting)
@@ -137,7 +140,7 @@ class App extends React.Component<AppProps, AppState> {
       <div className="main">
         <AlgorithmBar {...ABProps} />
         <div className="content-wrapper">
-          <Plot {...plotProps} />
+          {this.state.algorithm === "" ? <Landing /> : <Plot {...plotProps} />}
         </div>
       </div>
     );

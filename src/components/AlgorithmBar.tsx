@@ -78,6 +78,7 @@ const AlgorithmBar: React.FunctionComponent<AlgorithmBarProps> = ({
           min="10"
           max="100"
           step="1"
+          defaultValue="50"
           className="algorithmbar__input"
           onChange={ev => setNumOfBars(ev.target.valueAsNumber)}
         />
@@ -86,9 +87,10 @@ const AlgorithmBar: React.FunctionComponent<AlgorithmBarProps> = ({
         <div className="algorithmbar__label">Speed:</div>
         <input
           type="range"
-          min="0.1"
+          min="0.01"
           max="5"
           step="0.1"
+          defaultValue="2"
           className="algorithmbar__input"
           onChange={ev => setSpeed(ev.target.valueAsNumber)}
         />
