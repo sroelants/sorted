@@ -92,6 +92,9 @@ function heapsort(array: number[]): number[] {
  * @return {Generator<number[]>} - The sorted array.
  **/
 function* heapSortGenerator(array: number[]) {
+  if (!array.length) {
+    return { array: array };
+  }
   // Create max heap
   for (let i = Math.floor(array.length / 2); i >= 0; i--) {
     array = (yield* bubbleDownGenerator(array, i)).array;
