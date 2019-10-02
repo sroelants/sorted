@@ -44,6 +44,15 @@ test("isMaxHeap([6,4,5,2,1,3]) returns true", () => {
 
 // partition tests
 
-test("partition [] returns [[],[]]", () => {
-  expect(partition([])).toEqual([[],[]]);
+test("partition([],0) returns [[],[]].", 
+  () => {
+  expect(partition([], 0)).toEqual([[],[]]);
+});
+
+test("partition([1,1,1], 0) returns [[],[1,1,1]]", () => {
+  expect(partition([1,1,1], 0)).toEqual([[],[1,1,1]]);
+});
+
+test("partition([1,2,3,4,5], 3) returns [[1,2],[3,4,5]]", () => {
+  expect(partition([1,2,3,4,5], 3)).toEqual([[1,2],[3,4,5]]);
 });
