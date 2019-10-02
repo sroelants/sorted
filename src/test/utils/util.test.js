@@ -1,4 +1,4 @@
-import { swap, isSorted, isMaxHeap } from "../../utils/util";
+import { swap, isSorted, isMaxHeap, partition } from "../../utils/util";
 
 // isSorted tests
 
@@ -40,4 +40,10 @@ test("isMaxHeap([1,2]) returns false", () => {
 
 test("isMaxHeap([6,4,5,2,1,3]) returns true", () => {
   expect(isMaxHeap([6,4,5,2,1,3])).toEqual(true);
+});
+
+// partition tests
+
+test("partition [] returns [[],[]]", () => {
+  expect(partition([])).toEqual([[],[]]);
 });

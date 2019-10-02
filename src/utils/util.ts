@@ -34,4 +34,14 @@ function isMaxHeap(array: number[]): boolean {
   return isHeap;
 }
 
-export { isSorted, swap, range, randArray, isMaxHeap };
+function partition(array: number[], value: number): [number[], number[]] {
+  let less = [];
+  let greater = [];
+  for (let i = 0; i < array.length; i++) {
+    if (array[i] < value) less.push(array[i]);
+    else greater.push(array[i]);
+  }
+  return [less, greater];
+}
+
+export { isSorted, swap, range, randArray, isMaxHeap, partition };
