@@ -115,6 +115,7 @@ class App extends React.Component<AppProps, AppState> {
 
   render() {
     let ABProps: AlgorithmBarProps = {
+      algorithm: this.state.algorithm,
       setSpeed: this.setSpeed,
       setAlgorithm: this.setAlgorithm,
       setNumOfBars: this.setNumOfBars
