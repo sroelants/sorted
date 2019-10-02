@@ -93,10 +93,9 @@ function heapsort(array: number[]): number[] {
  **/
 function* heapSortGenerator(array: number[]) {
   // Create max heap
-  for (let i = array.length - 1; i >= 0; i--) {
+  for (let i = Math.floor(array.length / 2); i >= 0; i--) {
     array = (yield* bubbleDownGenerator(array, i)).array;
-    yield { array: array };
-    // array = bubbleDown(array, i);
+    yield { array: array, active: [i] };
   }
 
   for (let i = array.length - 1; i > 0; i--) {
@@ -120,7 +119,7 @@ function* bubbleDownGenerator(
 
     // If there are no children, do nothing.
     if (lChildIndex >= max) {
-      return { array: array };
+      return { array: array, active: [index] };
     }
 
     const largestChildIndex =
@@ -131,10 +130,10 @@ function* bubbleDownGenerator(
         : rChildIndex;
 
     if (array[index] >= array[largestChildIndex]) {
-      return { array: array };
+      return { array: array, active: [index, largestChildIndex] };
     }
     array = swap(array, index, largestChildIndex);
-    yield { array: array };
+    yield { array: array, active: [index, largestChildIndex] };
     index = largestChildIndex;
   }
 }

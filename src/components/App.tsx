@@ -5,13 +5,14 @@ import { Plot, PlotProps } from "./Plot";
 import { AlgorithmBar, AlgorithmBarProps } from "./AlgorithmBar";
 import { bubbleSortGenerator } from "../algorithms/bubblesort";
 import { mergeSortGenerator } from "../algorithms/mergesort";
+import { heapSortGenerator } from "../algorithms/heapsort";
 import { heapify, bubbleDown } from "../algorithms/heapsort";
 import { randArray } from "../utils/util";
 
 const sortGens: any = {
   bubblesort: bubbleSortGenerator,
   mergesort: mergeSortGenerator,
-  headsort: mergeSortGenerator,
+  heapsort: heapSortGenerator,
   quicksort: mergeSortGenerator
 };
 
@@ -97,7 +98,7 @@ class App extends React.Component<AppProps, AppState> {
   sort() {
     let { value, done } = this.state.sortGen.next();
     let heights: number[] = value.array;
-    let active: number[] = value.active;
+    let active: number[] = value.active ? value.active : [];
     this.setState({
       heights: heights,
       active: active
