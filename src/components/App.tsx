@@ -66,7 +66,7 @@ class App extends React.Component<AppProps, AppState> {
         ? this.state.heights.concat(randArray(diff))
         : this.state.heights.slice(0, numOfBars);
     this.setState(state => {
-      let algorithm: string = state.algorithm;
+      let algorithm: string = state.algorithm ? state.algorithm : "bubblesort";
       return {
         heights: newHeights,
         numOfBars: numOfBars,

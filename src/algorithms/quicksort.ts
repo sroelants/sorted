@@ -23,7 +23,7 @@ function* quickSortGenerator(
   for (let i = min + 1; i < max; i++) {
     if (array[i] < pivot) less.push(array[i]);
     else greater.push(array[i]);
-    array.splice(min, i - min + 1, ...less.concat([pivot]).concat(greater));
+    array.splice(min, i - min + 1, ...less.concat(pivot, greater));
     yield {
       array: array,
       active: [min + less.length],

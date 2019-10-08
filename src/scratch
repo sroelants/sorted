@@ -1,0 +1,10 @@
+How would I visualize the partition step? Instead of a generator, simply use a for-loop?
+Definitely seems easier to do this in a loop...
+
+then, quicksort the left side and the right? So, simply:
+
+function* quicksort(array, min, max) {
+  partition... (should return an index as well.)
+  yield* quicksort(less)
+  yield* quicksort(greater)
+}
