@@ -1,6 +1,7 @@
 {
   "name": "sorted",
   "version": "0.1.0",
+  "homepage": "https://www.samroelants.com/projects",
   "private": true,
   "dependencies": {
     "@types/jest": "24.0.18",
